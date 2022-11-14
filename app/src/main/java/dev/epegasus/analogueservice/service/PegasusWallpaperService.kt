@@ -121,7 +121,14 @@ class PegasusWallpaperService : WallpaperService() {
                 hrNeedleControl(it)
                 minNeedleControl(it)
                 secNeedleControl(it)
-                surfaceHolder.unlockCanvasAndPost(it)
+
+                try {
+                    if(surfaceHolder.surface.isValid){
+                        surfaceHolder.unlockCanvasAndPost(canvas);
+                    }
+                } catch (ex: IllegalStateException) {
+                    //ex.recordException("PegasusWallpaperService > unlockCanvasAndPost")
+                }
                 repeatMethod()
             } ?: kotlin.run {
                 Log.d(TAG, "draw: Canvas is not found.")
